@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
+# Tony's Place 2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The ultimate digital radio and lifestyle platform. High-fidelity audio, curated digital culture, and decentralized commerce.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend**: React 19 + TypeScript + Vite
+- **Backend**: Node.js + Express + sql.js (SQLite in-memory)
+- **Authentication**: WebAuthn/Passkeys
+- **Hosting**: Netlify (Frontend) + Render (Backend)
 
-## React Compiler
+## 🛠️ Development Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-## Expanding the ESLint configuration
+### Install Dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Frontend
+cd tonys_place_v2
+npm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Backend
+cd backend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Run Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Frontend (Vite dev server on port 3001)
+npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Backend (Express on port 9000)
+cd backend && npm start
 ```
+
+### Build for Production
+
+```bash
+# Frontend build
+npm run build
+# Output: dist/
+
+# Backend is single server that serves both frontend + API
+cd backend && npm start
+```
+
+## 📡 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/health` | GET | Health check |
+| `/api/radio/now-playing` | GET | Current playing track |
+| `/api/tracks` | GET | List all tracks |
+| `/api/tracks/:id` | GET | Single track |
+| `/api/playlists` | GET | List playlists |
+| `/api/products` | GET | Shop products |
+| `/api/auth/register` | POST | Register with passkey |
+| `/api/auth/login` | POST | Login with passkey |
+| `/api/auth/session` | GET | Verify session |
+
+## 🎵 Audio Files
+
+Audio files are stored in `/home/tony/tonys_place_prod/backend/uploads` and served via `/uploads/*`
+
+## 🔐 Authentication
+
+Uses WebAuthn/Passkeys for secure, passwordless authentication.
+
+## 🚢 Deployment
+
+### Frontend → Netlify
+```bash
+netlify deploy --prod --dir=dist
+```
+
+### Backend → Render
+1. Connect GitHub repo to Render
+2. Create Web Service with:
+   - Build Command: `npm install`
+   - Start Command: `node backend/server.js`
+   - Environment: Node
+
+## 📁 Project Structure
+
+```
+tonys_place_v2/
+├── backend/
+│   ├── server.js      # Express server
+│   ├── database.js    # SQLite with sql.js
+│   ├── auth.js        # Passkey auth handlers
+│   ├── data/          # Database files
+│   └── uploads/       # Audio files (symlink)
+├── src/
+│   ├── components/    # React components
+│   ├── pages/         # Page components
+│   ├── services/      # Business logic
+│   └── store/         # Zustand state
+├── dist/              # Production build
+└── Procfile           # Render deployment
+```
+
+## License
+
+MIT
