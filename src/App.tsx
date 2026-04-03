@@ -23,10 +23,8 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const { isPlaying, currentTrack, setCurrentTrack } = useAppStore();
 
-  // API base URL - uses environment variable or production backend
-  const apiBase = window.location.origin === 'https://tonysplace.co.uk'
-    ? 'https://tonys-place-backend.onrender.com'
-    : window.location.origin;
+  // API base URL - uses production backend on Render
+  const apiBase = 'https://tonys-place-backend.onrender.com';
 
   useEffect(() => {
     // Initial fetch to get the current stream URL

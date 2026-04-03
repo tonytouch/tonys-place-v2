@@ -17,23 +17,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
-const DIST_PATH = process.env.DIST_PATH || path.join(__dirname, '..', 'dist');
-const UPLOADS_PATH = process.env.UPLOADS_PATH || path.join(__dirname, '..', '..', 'tonys_place_prod', 'backend', 'uploads');
+// Paths - different for local vs Render
+const isRender = process.env.RENDER === 'true' || !fs.existsSync(path.join(__dirname, '..', 'dist'));
+const DIST_PATH = isRender ? null : path.join(__dirname, '..', 'dist');
+const UPLOADS_PATH = isRender ? null : process.env.UPLOADS_PATH || path.join(__dirname, '..', '..', 'tonys_place_prod', 'backend', 'uploads');
 
-console.log('📁 Serving static files from:', DIST_PATH);
-console.log('🎵 Serving audio from:', UPLOADS_PATH);
+console.log('Running on:', isRender ? 'Render (API only)' : 'Local (full stack)');
 
-// Serve React build (frontend)
-if (fs.existsSync(DIST_PATH)) {
+// Serve React build only if exists (local dev only)
+if (DIST_PATH && fs.existsSync(DIST_PATH)) {
   app.use(express.static(DIST_PATH));
+  console.log('📁 Serving static files from:', DIST_PATH);
 }
 
-// Serve uploads directory (audio files)
-if (fs.existsSync(UPLOADS_PATH)) {
+// Serve uploads directory if exists (local dev only)  
+if (UPLOADS_PATH && fs.existsSync(UPLOADS_PATH)) {
   app.use('/uploads', express.static(UPLOADS_PATH));
+  console.log('🎵 Serving audio from:', UPLOADS_PATH);
 } else {
-  console.log('⚠️ Uploads directory not found at:', UPLOADS_PATH);
+  console.log('⚠️ Audio files not available on this server');
 }
 
 // ============ API ROUTES ============
@@ -136,19 +138,25 @@ app.post('/api/auth/verify', auth.verifyLoginPasskey);
 app.post('/api/auth/logout', auth.logout);
 app.get('/api/auth/session', auth.verifySession);
 
-// ============ FALLBACK FOR SPA ============
+// ============ FALLBACK FOR API ============
 
-// Serve React app for all non-API routes
+// API 404 handler
 app.get('*', (req, res) => {
-  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
-    return res.status(404).json({ error: 'Not found' });
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API endpoint not found', path: req.path });
   }
-  
-  if (fs.existsSync(path.join(DIST_PATH, 'index.html'))) {
-    res.sendFile(path.join(DIST_PATH, 'index.html'));
-  } else {
-    res.status(404).send('Tony\'s Place - Build not found. Run npm run build in the frontend.');
-  }
+  // On Render, just return a message
+  res.json({ 
+    message: "Tony's Place API is running", 
+    endpoints: [
+      '/api/v1/health',
+      '/api/radio/now-playing', 
+      '/api/tracks',
+      '/api/products',
+      '/api/auth/register',
+      '/api/auth/login'
+    ]
+  });
 });
 
 // ============ START SERVER ============
@@ -158,11 +166,9 @@ async function start() {
     // Initialize database
     await initDatabase();
     
-    app.listen(PORT, () => {
-      console.log('✅ Tony\'s Place Backend running on http://localhost:' + PORT);
-      console.log('📡 API available at http://localhost:' + PORT + '/api');
-      console.log('🎵 Audio files at http://localhost:' + PORT + '/uploads');
-      console.log('🌐 Frontend at http://localhost:' + PORT);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log('✅ Tony\'s Place API running on port ' + PORT);
+      console.log('📡 Endpoints available at /api/*');
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
