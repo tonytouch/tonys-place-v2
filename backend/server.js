@@ -4,18 +4,26 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
+console.log('Loading modules...');
+
 import { initDatabase, getTracks, getTrack, getNowPlaying, getPlaylists, getProducts, getSession } from './database.js';
 import * as auth from './auth.js';
+
+console.log('Modules loaded');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 9000;
+console.log('PORT set to:', PORT);
+
 const app = express();
+console.log('Express app created');
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+console.log('Middleware added');
 
 // Paths - different for local vs Render
 const isRender = process.env.RENDER === 'true' || !fs.existsSync(path.join(__dirname, '..', 'dist'));
@@ -163,6 +171,10 @@ app.get('*', (req, res) => {
 
 async function start() {
   try {
+    console.log('Starting Tony\'s Place backend...');
+    console.log('PORT:', PORT);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    
     // Initialize database
     await initDatabase();
     
