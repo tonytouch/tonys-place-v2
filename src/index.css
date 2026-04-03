@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;700;900&family=Roboto+Mono&display=swap');
+
+:root {
+  --tony-dark: #050505;
+  --tony-primary: #00D1B2;
+  --tony-primary-glow: rgba(0, 209, 178, 0.4);
+  --tony-secondary: #FF3860;
+  --tony-secondary-glow: rgba(255, 56, 96, 0.4);
+  --tony-border: rgba(255, 255, 255, 0.1);
+  --surface: rgba(15, 15, 15, 0.7);
+  --foreground: #ffffff;
+  --foreground-muted: rgba(255, 255, 255, 0.4);
+  --foreground-dim: rgba(255, 255, 255, 0.6);
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  --radius-button: 24px;
+  --radius-card: 32px;
+  --radius-small: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--tony-dark);
+  color: var(--foreground);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .display-font {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 2px;
+}
+
+.glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--tony-border);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-lg);
+}
+
+.neon-text {
+  text-shadow: 0 0 10px var(--tony-primary-glow);
+}
+
+.neon-text-secondary {
+  text-shadow: 0 0 10px var(--tony-secondary-glow);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.1s ease, filter 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.primary-button {
+  background-color: var(--tony-primary);
+  color: var(--tony-dark);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: var(--radius-button);
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--tony-border);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: var(--radius-button);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tony-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tony-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
