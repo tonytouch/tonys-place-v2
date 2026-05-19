@@ -4,6 +4,3 @@ services:
     env: node
     buildCommand: cd backend && npm install
     startCommand: cd backend && npm start
-    envVars:
-      - key: PORT
-        value: 9000
