@@ -2,5 +2,6 @@ services:
   - type: web
     name: tonys-place-backend
     env: node
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
