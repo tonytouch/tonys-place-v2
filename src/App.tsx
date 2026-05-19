@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const { isPlaying, currentTrack, setCurrentTrack } = useAppStore();
 
   // API base URL - uses production backend on Render
-  const apiBase = 'https://tonys-place-backend.onrender.com';
+  const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000';
 
   useEffect(() => {
     // Initial fetch to get the current stream URL

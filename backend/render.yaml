@@ -1,0 +1,7 @@
+buildCommand: cd backend && npm install
+startCommand: cd backend && npm start
+type: web
+runtime: node
+env:
+  - key: PORT
+    value: 9000
