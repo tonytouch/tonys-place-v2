@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
+import { API_BASE_URL } from '../config';
 
 const Shop: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -9,7 +10,7 @@ const Shop: React.FC = () => {
   const { addToBag, setIsBagOpen } = useAppStore();
 
   useEffect(() => {
-    fetch('/api/shop/products')
+    fetch(`${API_BASE_URL}/api/shop/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data);

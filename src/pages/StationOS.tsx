@@ -13,6 +13,7 @@ import {
   Layers
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
+import { API_BASE_URL } from '../config';
 
 const tabs = [
   { id: 'media', label: 'Media Vault', icon: Music },
@@ -33,7 +34,7 @@ const StationOS: React.FC = () => {
   const [loadingMedia, setLoadingMedia] = useState(false);
 
   useEffect(() => {
-    fetch('/api/unified/stats')
+    fetch(`${API_BASE_URL}/api/unified/stats`)
       .then(res => res.json())
       .then(data => setUnifiedStats(data))
       .catch(err => console.error('Failed to fetch unified stats:', err));
@@ -42,7 +43,7 @@ const StationOS: React.FC = () => {
   useEffect(() => {
     if (activeTab === 'media') {
       setLoadingMedia(true);
-      fetch('/api/station-os/media')
+      fetch(`${API_BASE_URL}/api/station-os/media`)
         .then(res => res.json())
         .then(data => {
           setMedia(data);
