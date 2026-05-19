@@ -5,7 +5,7 @@ const fs = require('fs');
 
 console.log('Starting Tony\'s Place Backend...');
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 10000;
 const app = express();
 
 app.use(cors());
