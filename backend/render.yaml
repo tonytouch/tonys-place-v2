@@ -1,0 +1,6 @@
+service:
+  type: web
+  name: tonys-place-backend
+  env: node
+  buildCommand: npm install
+  startCommand: npm start
