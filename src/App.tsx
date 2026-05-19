@@ -5,6 +5,7 @@ import TickerBar from './components/TickerBar';
 import FloatingPlayer from './components/FloatingPlayer';
 import ShoppingBag from './components/ShoppingBag';
 import { useAppStore } from './store/useAppStore';
+import { API_BASE_URL } from './config';
 
 // Pages
 import Home from './pages/Home';
@@ -23,12 +24,9 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const { isPlaying, currentTrack, setCurrentTrack } = useAppStore();
 
-  // API base URL - uses production backend on Render
-  const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000';
-
   useEffect(() => {
     // Initial fetch to get the current stream URL
-    fetch(`${apiBase}/api/radio/now-playing`)
+    fetch(`${API_BASE_URL}/api/radio/now-playing`)
       .then(res => res.json())
       .then(data => {
         if (data.now_playing?.song) {
@@ -44,7 +42,7 @@ const App: React.FC = () => {
       if (isPlaying && currentTrack.audioUrl) {
         const fullUrl = currentTrack.audioUrl.startsWith('http') 
           ? currentTrack.audioUrl 
-          : `${apiBase}${currentTrack.audioUrl}`;
+          : `${API_BASE_URL}${currentTrack.audioUrl}`;
 
         if (audioRef.current.src !== fullUrl) {
           audioRef.current.src = fullUrl;
@@ -54,7 +52,7 @@ const App: React.FC = () => {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, currentTrack.audioUrl, apiBase]);
+  }, [isPlaying, currentTrack.audioUrl]);
   return (
     <Router>
       <div style={{ minHeight: '100vh', backgroundColor: 'var(--tony-dark)' }}>

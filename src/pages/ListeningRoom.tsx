@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+import { API_BASE_URL } from '../config';
 import { motion } from 'framer-motion';
 import GlassCard from '../components/GlassCard';
 import { MessageSquare, Send, Music, List, History } from 'lucide-react';
@@ -14,7 +16,7 @@ const ListeningRoom: React.FC = () => {
 
   useEffect(() => {
     const fetchNowPlaying = () => {
-      fetch('/api/radio/now-playing')
+      fetch(`${API_BASE_URL}/api/radio/now-playing`)
         .then(res => res.json())
         .then(data => {
           if (data.now_playing?.song) {
